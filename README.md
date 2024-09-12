@@ -1,1 +1,0 @@
-This project asks the user a question, checks to see if the answer is correct or incorrect, provides feedback, and continues the quiz until completion. The quiz game project was an introduction to object oriented programming. By utilizing the QuizBrain class, I could easily change the questions/answers in the quiz. 
