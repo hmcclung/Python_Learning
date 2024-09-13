@@ -1,0 +1,1 @@
+This project was a simple mail merger project to understand file directories and paths in python. This project reads a starting letter and uses the list of names (Inputs) to write a personalized letter (Output) for each individual in the list. 
