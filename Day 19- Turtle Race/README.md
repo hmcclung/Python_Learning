@@ -1,0 +1,1 @@
+This project is a game where you bet on what color turtle will win (red, orange, yellow, green, blue, purple) and then watch as the turtles race. During this project I learned about creating different object instances.
