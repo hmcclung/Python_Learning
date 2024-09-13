@@ -1,0 +1,1 @@
+This project is the classic snake game, in space! User controls the snake with the keyboard arrow keys trying to all of the delicious red planets. This project utilized inheritence to pass attributes and methods from the existing Turtle class.
