@@ -1,0 +1,1 @@
+This project is a game where a brave turtle valiantly embarks on a journey to the other side of the screen through a maze of evil fast cars. The user uses the up arrow key to move the turtle forward and the level increments every time the far side of the screen is reached which increases the speed of the cars. 
