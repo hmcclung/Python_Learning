@@ -1,5 +1,0 @@
-
-Website: Amazon | Username: hunter@email.com | Password: QWERTY
-Website: Facebook | Username: hunter@email.com | Password: 123456
-Website: SuperDuperSecure | Username: hunter@email.com | Password: +9!5Q$wii2pUKX
-Website: GeneratePasswordTest | Username: hunter@email.com | Password: &q!P7P$hI2bF9J$3
