@@ -3,6 +3,7 @@ from tkinter import messagebox
 # Need to import messagebox because it's not a class
 from random import choice, randint, shuffle
 import pyperclip
+import json
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -32,25 +33,68 @@ def generate_password():
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
-    """If fields are unpopulated an error popup will occur. Otherwise, an ok/cancel popup will occur forcing the user
-    to verify the information entered was correct. If cancelled, nothing is saved and fields are unchanged. If
-    approved, information is saved to a data.txt file and fields are cleared."""
-    if len(website_field.get()) == 0 or len(username_field.get()) == 0 or len(password_field.get()) == 0:
+    """If fields are unpopulated an error popup will occur. Otherwise, information is saved to a data.json file and
+     fields are cleared."""
+
+    website = website_field.get()
+    username = username_field.get()
+    password = password_field.get()
+    new_data = {
+        website: {
+            "username": username,
+            "password": password,
+        }
+    }
+
+    if len(website) == 0 or len(username) == 0 or len(password) == 0:
+        #     Utilizes messagebox from tkinter to create a popup
         messagebox.showerror(title="Error", message="Please do not leave any fields empty!")
-    #     Utilizes messagebox from tkinter to create a popup
     else:
-        is_ok = messagebox.askokcancel(title=f"{website_field.get()}", message=f"These are the details entered: "
-                                                                               f"\nUsername: {username_field.get()} "
-                                                                               f"\nPassword: {password_field.get()} "
-                                                                               f"\nIs it ok to save?")
+        try:
+            # Reading old data and checking exception if file is empty
+            with open("data.json", "r") as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            with open("data.json", "w") as f:
+                json.dump(new_data, f, indent=4)
+        except json.decoder.JSONDecodeError:
+            data = {}
+            with open("data.json", "w") as f:
+                json.dump(new_data, f, indent=4)
+        else:
+            # Updating old data
+            data.update(new_data)
 
-        if is_ok:
-            with open("data.txt", "a") as f:
-                f.write(
-                    f"Website: {website_field.get()} | Username: {username_field.get()} | Password: {password_field.get()}\n")
-                website_field.delete(0, 'end')
-                password_field.delete(0, 'end')
+            with open("data.json", "w") as f:
+                # Saving updated data
+                json.dump(data, f, indent=4)
 
+        finally:
+            website_field.delete(0, 'end')
+            password_field.delete(0, 'end')
+
+
+# ---------------------------- Search ------------------------------- #
+def find_password():
+    """Searches JSON file to retrieve login information for user specified website. If website has no information or
+    no data file, a popup will appear to convey that to the user."""
+
+    try:
+        website = website_field.get()
+        with open("data.json") as data_file:
+            data = json.load(data_file)
+
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data File Found.")
+
+    else:
+        if website in data:
+            username = data[website]["username"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=f"{website} Login Info",
+                                message=f"Username: {username}\nPassword: {password}", )
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -92,4 +136,8 @@ password_button.grid(row=3, column=2, sticky='ew')
 add_button = Button(text="Add", width=36, command=save)
 add_button.grid(row=4, column=1, columnspan=2, sticky='ew')
 
+search_button = Button(text="Search", command=find_password)
+search_button.grid(row=1, column=2, sticky='ew')
+
 window.mainloop()
+
